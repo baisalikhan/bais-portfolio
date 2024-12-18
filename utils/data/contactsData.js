@@ -1,7 +1,7 @@
 export const contactsData = {
-    email: 'abusaid7388@gmail.com',
-    phone: '+8801608797655',
-    address: 'Middle Badda, Dhaka, Bangladesh - 1212 ',
+    email: 'baisalikhan710@gmail.com',
+    phone: '0340-9317526',
+    address: 'Rawalpindi, Punjab, Pakistan',
     github: 'https://github.com/said7388',
     facebook: 'https://www.facebook.com/abusaid.riyaz/',
     linkedIn: 'https://www.linkedin.com/in/abu-said-bd/',
