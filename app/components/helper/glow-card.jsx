@@ -1,10 +1,15 @@
 "use client"
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 const GlowCard = ({ children , identifier}) => {
-  useEffect(() => {
-    const CONTAINER = document.querySelector(`.glow-container-${identifier}`);
-    const CARDS = document.querySelectorAll(`.glow-card-${identifier}`);
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const CONTAINER = containerRef.current;
+    const CARDS = [cardRef.current]; // Since we only have one card per container
 
     const CONFIG = {
       proximity: 40,
@@ -68,8 +73,8 @@ const GlowCard = ({ children , identifier}) => {
   }, [identifier]);
 
   return (
-    <div className={`glow-container-${identifier} glow-container`}>
-      <article className={`glow-card glow-card-${identifier} h-fit cursor-pointer border border-[#2a2e5a] transition-all duration-300 relative bg-[#101123] text-gray-200 rounded-xl hover:border-transparent w-full`}>
+    <div ref={containerRef} className={`glow-container-${identifier} glow-container`}>
+      <article ref={cardRef} className={`glow-card glow-card-${identifier} h-fit cursor-pointer border border-[#2a2e5a] transition-all duration-300 relative bg-[#101123] text-gray-200 rounded-xl hover:border-transparent w-full`}>
         <div className="glows"></div>
         {children}
       </article>
