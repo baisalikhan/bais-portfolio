@@ -1,7 +1,9 @@
 "use client"
 
 import { useRef } from 'react';
-import GlowEffect from './glow-effect';
+const GlowEffect = dynamic(() => import('./glow-effect'), {
+  ssr: false
+});
 
 const GlowCard = ({ children, identifier }) => {
   const containerRef = useRef(null);
