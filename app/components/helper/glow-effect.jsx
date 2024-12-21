@@ -1,12 +1,12 @@
 "use client"
 import { useEffect } from 'react';
 
-const GlowEffect = ({ containerRef, cardRef, identifier }) => {
+const GlowEffect = ({ identifier }) => {
   useEffect(() => {
-    const CONTAINER = containerRef.current;
-    const CARD = cardRef.current;
+    const CONTAINER = document.querySelector(`.glow-container-${identifier}`);
+    const CARD = document.querySelector(`.glow-card-${identifier}`);
 
-    if (!CONTAINER || !CARD) return;
+    if (!CONTAINER || !CARD || typeof window === 'undefined') return;
 
     const CONFIG = {
       proximity: 40,
@@ -18,8 +18,6 @@ const GlowEffect = ({ containerRef, cardRef, identifier }) => {
     };
 
     const UPDATE = (event) => {
-      if (!CARD) return;
-      
       const CARD_BOUNDS = CARD.getBoundingClientRect();
 
       if (
@@ -64,7 +62,7 @@ const GlowEffect = ({ containerRef, cardRef, identifier }) => {
     return () => {
       window.removeEventListener('pointermove', UPDATE);
     };
-  }, [containerRef, cardRef, identifier]);
+  }, [identifier]);
 
   return null;
 };
