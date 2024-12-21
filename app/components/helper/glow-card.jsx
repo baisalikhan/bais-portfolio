@@ -1,15 +1,15 @@
 "use client"
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const GlowCard = ({ children , identifier}) => {
+const GlowCard = ({ children, identifier }) => {
   const containerRef = useRef(null);
   const cardRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (typeof window === 'undefined') return;
     
     const CONTAINER = containerRef.current;
-    const CARDS = [cardRef.current]; // Since we only have one card per container
+    const CARDS = [cardRef.current];
 
     const CONFIG = {
       proximity: 40,
@@ -21,6 +21,8 @@ const GlowCard = ({ children , identifier}) => {
     };
 
     const UPDATE = (event) => {
+      if (!CONTAINER || !CARDS[0]) return;
+
       for (const CARD of CARDS) {
         const CARD_BOUNDS = CARD.getBoundingClientRect();
 
@@ -51,9 +53,8 @@ const GlowCard = ({ children , identifier}) => {
       }
     };
 
-    document.body.addEventListener('pointermove', UPDATE);
-
     const RESTYLE = () => {
+      if (!CONTAINER) return;
       CONTAINER.style.setProperty('--gap', CONFIG.gap);
       CONTAINER.style.setProperty('--blur', CONFIG.blur);
       CONTAINER.style.setProperty('--spread', CONFIG.spread);
@@ -63,12 +64,16 @@ const GlowCard = ({ children , identifier}) => {
       );
     };
 
-    RESTYLE();
-    UPDATE();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('pointermove', UPDATE);
+      RESTYLE();
+      UPDATE();
+    }
 
-    // Cleanup event listener
     return () => {
-      document.body.removeEventListener('pointermove', UPDATE);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('pointermove', UPDATE);
+      }
     };
   }, [identifier]);
 
